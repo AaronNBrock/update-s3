@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Query Bucket Names
+      shell: aws s3api list-buckets --output text --query="Buckets[].Name"
+      register: buckets_command
+      check_mode: no
+      when: buckets is not defined
+
+    - name: Set 'buckets' variable
+      set_fact:
+        buckets: "{{ buckets_command.stdout.split('\t') }}"
+      when: buckets is not defined
+
+    - name: Enable encryption for buckets
+      s3_bucket:
+        name: "{{ item }}"
+        encryption: AES256
+      with_items: "{{ buckets }}"
