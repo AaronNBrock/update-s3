@@ -1,3 +1,3 @@
 Update s3
 ---
-This playbook `encryption.yml` will enable encyrption
+The playbook `encryption.yml` will enable encryption for all buckets on the logged in amazon account.
